@@ -6,7 +6,7 @@ int F1, F2, F3;
 
 ICBYTES ArcherShoot[13]; //For archer sprite sheet
 
-ICBYTES ArcherStanding;
+ICBYTES ArcherStanding, ArrowR;
 ICBYTES Forest, Archer, Arrow;
 
 int currentFrame = 0; // Animasyon çerçevesi
@@ -42,10 +42,21 @@ void Shoot(void*)
 
 	for (int i = 0; i <= 13; i++) {
 		Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
-		Paste(ArcherStanding, 10, 250, Forest);
+		PasteNon0(ArcherStanding, 10, 250, Forest);
 		DisplayImage(F3, Forest);
 		Sleep(120);
+
 	}
+
+	Sleep(0);
+	for (int b = 0; b <= 15; b++) {
+		Copy(Arrow, 5, 5, 40, 40 , ArrowR);
+		PasteNon0(ArrowR,50+b, 250, Forest);
+		DisplayImage(F3, Forest);
+	}
+	
+
+
 }
 
 
@@ -61,7 +72,7 @@ void ICGUI_main()
 	ReadImage("archeryedek.bmp", Archer);
 	DisplayImage(F1, Archer);
 
-	ReadImage("arrow.bmp", Arrow);
+	ReadImage("arrowyedek.bmp", Arrow);
 	DisplayImage(F2, Arrow);
 
 	ReadImage("forest.bmp", Forest);
