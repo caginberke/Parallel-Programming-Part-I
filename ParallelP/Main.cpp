@@ -1,7 +1,5 @@
 #include<windows.h>
 #include"icb_gui.h"
-#include <iostream>
-using namespace std;
 
 int MLE1, MLE2;
 	
@@ -81,7 +79,6 @@ VOID* Shoot(PVOID lpParam)
 {
 
 	if (thread_continue) {
-		Copy(Background, 1, 1, 574, 322, Forest);
 
 		ICBYTES cordinat{ {38, 54, 54, 74},{96,54,67,74},{100,54,63,74},{161,54,70,74},{230,54,73,74},
 		{300,54,71,74},{375,54,73,74},{446,54,93,74},{540,54,94,74},{636,54,90,74},{726,54,82,74},{808,54,74,74},{952,54,69,74} };
@@ -110,6 +107,18 @@ VOID* Shoot(PVOID lpParam)
 			if (monsterx <= arrowx) {
 				thread2_continue = false;
 				thread_dead = true;
+				ICBYTES cor{{25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
+				for (int c = 0; c < 4; c++) {
+					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Background, 1, 1, 574, 322, Forest);
+					PasteNon0(ArcherStanding, 10, 250, Forest);
+					Copy(Hurt, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), HurtR);
+					PasteNon0(HurtR, monsterx, 280, Forest);
+					DisplayImage(F3, Forest);
+					Sleep(150);
+
+				}
+
 				//Copy(Background, 1, 1, 574, 322, Forest);
 
 			}
@@ -123,22 +132,20 @@ VOID* Shoot(PVOID lpParam)
 	return NULL;
 }
 
-VOID* DeadAnimation(PVOID lpParam) {
+/*VOID* DeadAnimation(PVOID lpParam) {
+	
 	while (thread_dead) {
-		ICBYTES cordinat{ {25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
-		for (int i = 0; i <= 4; i++) {
-			Copy(Background, 1, 1, 574, 322, Forest);
-			Copy(Hurt, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), HurtR);
-			PasteNon0(HurtR, monsterx, 280, Forest);
-			DisplayImage(F3, Forest);
-			Sleep(120);
+		Copy(Background, 1, 1, 574, 322, Forest);
+		Copy(Hurt, 25, 45, 150, 49, HurtR);
+		PasteNon0(HurtR, monsterx, 280, Forest);
+		DisplayImage(F3, Forest);
 
-		}
+		
 
 
 	}
 	return NULL;
-}
+}*/
 
 
 void butonfonk()
@@ -147,6 +154,8 @@ void butonfonk()
 	if (!thread_continue){
 		thread_continue = true;
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
+		//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
+
 		SetFocus(ICG_GetMainWindow());
 	}
 	else thread_continue = false;
@@ -194,7 +203,7 @@ void ICGUI_main()
 	ReadImage("monsternew.bmp", Monster);
 	DisplayImage(F4, Monster);
 
-	ReadImage("Hurt.bmp", Hurt);
+	ReadImage("hurt.bmp", Hurt);
 	DisplayImage(F5, Hurt);
 
 }
