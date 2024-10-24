@@ -13,6 +13,8 @@ ICBYTES Forest, Archer, Arrow, Monster, Background;
 bool thread_continue = false;
 bool thread2_continue = false;
 
+int monsterx;
+int arrowx;
 
 void ICGUI_Create()
 {
@@ -43,6 +45,7 @@ void LoadArcherShoot()
 		PasteNon0(ArcherShoot[i - 1], 33 * i, 230, Forest);
 	}*/
 
+
 	for (int i = 0; i <= 32; i++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
 		Copy(Monster, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), MonsterR);
@@ -50,6 +53,7 @@ void LoadArcherShoot()
 		PasteNon0(ArcherStanding, 10, 250, Forest);
 
 		DisplayImage(F3, Forest);
+
 		Sleep(160);
 
 	}
