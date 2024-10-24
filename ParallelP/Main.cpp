@@ -1,6 +1,10 @@
 #include<windows.h>
 #include"icb_gui.h"
+#include <iostream>
+using namespace std;
 
+int MLE1, MLE2;
+	
 
 int F1, F2, F3, F4, F5;
 
@@ -13,10 +17,11 @@ ICBYTES Forest, Archer, Arrow, Monster, Background, Temp;
 bool thread_continue = false;
 bool thread2_continue = false;
 
+bool thread_dead = false;
+
 int monsterx = 480;
 int arrowx = 50;
-int monsterx2 = 480;
-int arrowx2 = 50;
+
 
 void ICGUI_Create()
 {
@@ -25,7 +30,7 @@ void ICGUI_Create()
 
 }
 
-void LoadArcherShoot()
+VOID* LoadArcherShoot(PVOID lpParam)
 {
 
 	while (thread2_continue) {
@@ -50,11 +55,15 @@ void LoadArcherShoot()
 
 	for (int i = 0; i <= 32; i++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
-		Copy(Monster, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), MonsterR);
-		PasteNon0(MonsterR, monsterx-i*12 , 280, Forest);
-		monsterx2 -= 12;
-	
-		
+
+		if (arrowx <= monsterx) {
+			Copy(Monster, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), MonsterR);
+			PasteNon0(MonsterR, monsterx, 280, Forest);
+			monsterx = monsterx - 10;
+
+		}
+
+
 		PasteNon0(ArcherStanding, 10, 250, Forest);
 
 		DisplayImage(F3, Forest);
@@ -64,11 +73,13 @@ void LoadArcherShoot()
 	}
 
 	}
-
+	return NULL;
 }
 
-void Shoot(void*)
+VOID* Shoot(PVOID lpParam)
 {
+	DWORD dw;
+
 	if (thread_continue) {
 		Copy(Background, 1, 1, 574, 322, Forest);
 
@@ -92,11 +103,13 @@ void Shoot(void*)
 		Sleep(0);
 		for (int b = 0; b <= 40; b++) {
 			Copy(Arrow, 5, 5, 40, 40, ArrowR);
-			PasteNon0(ArrowR, arrowx + b*22 , 270, Forest);
-			arrowx2 += 22;
-			if (monsterx2 <= arrowx2) {
+			PasteNon0(ArrowR, arrowx , 270, Forest);
+			arrowx =  arrowx + 10;
+			if (monsterx <= arrowx) {
 				thread2_continue = false;
-
+				thread_dead = true;
+				//Copy(Background, 1, 1, 574, 322, Forest);
+				//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
 			}
 
 			DisplayImage(F3, Forest);
@@ -105,14 +118,23 @@ void Shoot(void*)
 		}
 		
 	}
+	return NULL;
 }
 
+/*VOID* DeadAnimation(PVOID lpParam) {
+	if (thread_dead) {
+		Copy(Background, 1, 1, 574, 322, Forest);
+		Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+		PasteNon0(ArcherStanding, 10, 250, Forest);
+		DisplayImage(F3, Forest);
+	}
+
+}*/
 
 
 void butonfonk()
 {
 	DWORD dw;
-	int m = 0;
 	if (!thread_continue){
 		thread_continue = true;
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
@@ -145,6 +167,8 @@ void ICGUI_main()
 	ICG_Button(5, 5, 90, 40, "Start the Animation", butonfonk2);
 	ICG_Button(105, 5, 90, 40, "Shoot Arrow Animation", butonfonk);
 	
+	//MLE1 = ICG_MLEditSunken(500, 20, 200, 100, "awdaw", SCROLLBAR_V);
+	//MLE2 = ICG_MLEditSunken(700, 120, 200, 100, "awdaw", SCROLLBAR_V);
 
 	ReadImage("archer.bmp", Archer);
 	DisplayImage(F1, Archer);
