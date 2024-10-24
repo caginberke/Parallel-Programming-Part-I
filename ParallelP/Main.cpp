@@ -10,9 +10,10 @@ int F1, F2, F3, F4, F5;
 
 ICBYTES ArcherShoot[13]; //For archer sprite sheet
 ICBYTES MonsterWalk[32]; //For monster sprite sheet
+ICBYTES MonsterHurt[4]; //For monster sprite sheet
 
 ICBYTES ArcherStanding, ArrowR, MonsterR;
-ICBYTES Forest, Archer, Arrow, Monster, Background, Temp;
+ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR;
 
 bool thread_continue = false;
 bool thread2_continue = false;
@@ -102,14 +103,16 @@ VOID* Shoot(PVOID lpParam)
 
 		Sleep(0);
 		for (int b = 0; b <= 40; b++) {
-			Copy(Arrow, 5, 5, 40, 40, ArrowR);
-			PasteNon0(ArrowR, arrowx , 270, Forest);
-			arrowx =  arrowx + 10;
+			if(arrowx < monsterx){
+				Copy(Arrow, 5, 5, 40, 40, ArrowR);
+				PasteNon0(ArrowR, arrowx , 270, Forest);
+				arrowx =  arrowx + 10;
+			}
 			if (monsterx <= arrowx) {
 				thread2_continue = false;
 				thread_dead = true;
 				//Copy(Background, 1, 1, 574, 322, Forest);
-				//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
+				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
 			}
 
 			DisplayImage(F3, Forest);
@@ -121,15 +124,21 @@ VOID* Shoot(PVOID lpParam)
 	return NULL;
 }
 
-/*VOID* DeadAnimation(PVOID lpParam) {
-	if (thread_dead) {
-		Copy(Background, 1, 1, 574, 322, Forest);
-		Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-		PasteNon0(ArcherStanding, 10, 250, Forest);
-		DisplayImage(F3, Forest);
+VOID* DeadAnimation(PVOID lpParam) {
+	while (thread_dead) {
+		ICBYTES cordinat{ {25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
+		for (int i = 0; i <= 4; i++) {
+			Copy(Background, 1, 1, 574, 322, Forest);
+			Copy(Hurt, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), HurtR);
+			PasteNon0(HurtR, monsterx, 280, Forest);
+			Sleep(120);
+
+		}
+
+
 	}
 
-}*/
+}
 
 
 void butonfonk()
@@ -182,4 +191,8 @@ void ICGUI_main()
 
 	ReadImage("monsternew.bmp", Monster);
 	DisplayImage(F4, Monster);
+
+	ReadImage("HURT.bmp", Hurt);
+	DisplayImage(F5, Hurt);
+
 }
