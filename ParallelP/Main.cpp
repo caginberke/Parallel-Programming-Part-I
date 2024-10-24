@@ -4,14 +4,14 @@
 int MLE1, MLE2;
 	
 
-int F1, F2, F3, F4, F5;
+int F1, F2, F3, F4, F5, F6;
 
 ICBYTES ArcherShoot[13]; //For archer sprite sheet
 ICBYTES MonsterWalk[32]; //For monster sprite sheet
 ICBYTES MonsterHurt[4]; //For monster sprite sheet
 
 ICBYTES ArcherStanding, ArrowR, MonsterR;
-ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR;
+ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR , Dead, DeadR;
 
 bool thread_continue = false;
 bool thread2_continue = false;
@@ -24,7 +24,7 @@ int arrowx = 50;
 
 void ICGUI_Create()
 {
-	ICG_MWSize(1180, 800);
+	ICG_MWSize(1400, 800);
 	ICG_MWTitle("SHOOT UP");
 
 }
@@ -106,7 +106,7 @@ VOID* Shoot(PVOID lpParam)
 			}
 			if (monsterx <= arrowx) {
 				thread2_continue = false;
-				thread_dead = true;
+				//thread_dead = true;
 				ICBYTES cor{{25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
 				for (int c = 0; c < 4; c++) {
 					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
@@ -115,10 +115,33 @@ VOID* Shoot(PVOID lpParam)
 					Copy(Hurt, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), HurtR);
 					PasteNon0(HurtR, monsterx, 280, Forest);
 					DisplayImage(F3, Forest);
-					Sleep(150);
+					Sleep(350);
+					
+				}
+
+				ICBYTES cord{ {10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
+				for (int e = 0; e < 3; e++) {
+					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Background, 1, 1, 574, 322, Forest);
+					PasteNon0(ArcherStanding, 10, 250, Forest);
+					Copy(Dead, cord.I(1, e), cord.I(2, e), cord.I(3, e), cord.I(4, e), DeadR);
+					PasteNon0(DeadR, monsterx, 295, Forest);
+					DisplayImage(F3, Forest);
+					Sleep(300);
+
+				}
+				for (int k = 0; k < 50; k++) {
+					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Background, 1, 1, 574, 322, Forest);
+					PasteNon0(ArcherStanding, 10, 250, Forest);
+					PasteNon0(DeadR, monsterx, 295+k, Forest);
+					DisplayImage(F3, Forest);
+					Sleep(300);
 
 				}
 
+
+				b = 41;
 				//Copy(Background, 1, 1, 574, 322, Forest);
 
 			}
@@ -131,6 +154,22 @@ VOID* Shoot(PVOID lpParam)
 	}
 	return NULL;
 }
+
+/*
+
+ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
+				for (int e = 0; e < 3; e++) {
+					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Background, 1, 1, 574, 322, Forest);
+					PasteNon0(ArcherStanding, 10, 250, Forest);
+					Copy(Dead, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), DeadR);
+					PasteNon0(DeadR, monsterx, 280, Forest);
+					DisplayImage(F3, Forest);
+					Sleep(150);
+
+				}
+
+*/
 
 /*VOID* DeadAnimation(PVOID lpParam) {
 	
@@ -182,6 +221,8 @@ void ICGUI_main()
 	F3 = ICG_FrameMedium(10, 200, 574, 322);
 	F4 = ICG_FrameMedium(600,200, 50, 50);
 	F5 = ICG_FrameMedium(10, 600, 50, 50);
+	F6 = ICG_FrameMedium(735, 600, 50, 50);
+
 
 
 	ICG_Button(5, 5, 90, 40, "Start the Animation", butonfonk2);
@@ -205,5 +246,8 @@ void ICGUI_main()
 
 	ReadImage("hurt.bmp", Hurt);
 	DisplayImage(F5, Hurt);
+
+	ReadImage("dead.bmp", Dead);
+	DisplayImage(F6, Dead);
 
 }
