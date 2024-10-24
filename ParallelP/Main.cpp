@@ -13,8 +13,6 @@ ICBYTES Forest, Archer, Arrow, Monster, Background, Temp;
 bool thread_continue = false;
 bool thread2_continue = false;
 
-bool box2Life = true;
-
 int monsterx = 480;
 int arrowx = 50;
 int monsterx2 = 480;
@@ -23,7 +21,7 @@ int arrowx2 = 50;
 void ICGUI_Create()
 {
 	ICG_MWSize(1180, 800);
-	ICG_MWTitle("Archer");
+	ICG_MWTitle("SHOOT UP");
 
 }
 
@@ -90,22 +88,32 @@ void Shoot(void*)
 			Sleep(120);
 
 		}
-		
 
-		
+		Sleep(0);
+		for (int b = 0; b <= 40; b++) {
+			Copy(Arrow, 5, 5, 40, 40, ArrowR);
+			PasteNon0(ArrowR, arrowx + b*22 , 270, Forest);
+			arrowx2 += 22;
+			if (monsterx2 <= arrowx2) {
+				thread2_continue = false;
+
+			}
+
+			DisplayImage(F3, Forest);
+			Sleep(30);
+
+		}
 		
 	}
 }
 
 
 
-
-
-void butonfonk(){
+void butonfonk()
+{
 	DWORD dw;
 	int m = 0;
-	if (!thread_continue)
-	{
+	if (!thread_continue){
 		thread_continue = true;
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
 		SetFocus(ICG_GetMainWindow());
@@ -113,25 +121,10 @@ void butonfonk(){
 	else thread_continue = false;
 }
 
-
-VOID* ArrowThread(PVOID lpParam) {
-
-	while (thread_continue) {
-		for (int b = 0; b <= 40; b++) {
-			Copy(Arrow, 5, 5, 40, 40, ArrowR);
-			PasteNon0(ArrowR, arrowx + b * 22, 270, Forest);
-			arrowx2 += b*22;
-			if (arrowx2 > monsterx2) {
-				thread2_continue = false;
-			}
-			DisplayImage(F3, Forest);
-			Sleep(30);
-		}
-		return NULL;
-	}
-
-void butonfonk2(){
+void butonfonk2()
+{
 	DWORD dw;
+
 	if (!thread2_continue)
 	{
 		thread2_continue = true;
