@@ -79,7 +79,6 @@ VOID* LoadArcherShoot(PVOID lpParam)
 
 VOID* Shoot(PVOID lpParam)
 {
-	DWORD dw;
 
 	if (thread_continue) {
 		Copy(Background, 1, 1, 574, 322, Forest);
@@ -112,7 +111,7 @@ VOID* Shoot(PVOID lpParam)
 				thread2_continue = false;
 				thread_dead = true;
 				//Copy(Background, 1, 1, 574, 322, Forest);
-				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
+
 			}
 
 			DisplayImage(F3, Forest);
@@ -131,13 +130,14 @@ VOID* DeadAnimation(PVOID lpParam) {
 			Copy(Background, 1, 1, 574, 322, Forest);
 			Copy(Hurt, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), HurtR);
 			PasteNon0(HurtR, monsterx, 280, Forest);
+			DisplayImage(F3, Forest);
 			Sleep(120);
 
 		}
 
 
 	}
-
+	return NULL;
 }
 
 
@@ -172,6 +172,8 @@ void ICGUI_main()
 	F2 = ICG_FrameMedium(600, 200, 50, 20);
 	F3 = ICG_FrameMedium(10, 200, 574, 322);
 	F4 = ICG_FrameMedium(600,200, 50, 50);
+	F5 = ICG_FrameMedium(10, 600, 50, 50);
+
 
 	ICG_Button(5, 5, 90, 40, "Start the Animation", butonfonk2);
 	ICG_Button(105, 5, 90, 40, "Shoot Arrow Animation", butonfonk);
@@ -192,7 +194,7 @@ void ICGUI_main()
 	ReadImage("monsternew.bmp", Monster);
 	DisplayImage(F4, Monster);
 
-	ReadImage("HURT.bmp", Hurt);
+	ReadImage("Hurt.bmp", Hurt);
 	DisplayImage(F5, Hurt);
 
 }
