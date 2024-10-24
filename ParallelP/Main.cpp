@@ -2,24 +2,28 @@
 #include"icb_gui.h"
 
 
-int F1, F2, F3, F4;
+int F1, F2, F3, F4, F5;
 
 ICBYTES ArcherShoot[13]; //For archer sprite sheet
 ICBYTES MonsterWalk[32]; //For monster sprite sheet
 
 ICBYTES ArcherStanding, ArrowR, MonsterR;
-ICBYTES Forest, Archer, Arrow, Monster, Background;
+ICBYTES Forest, Archer, Arrow, Monster, Background, Temp;
 
 bool thread_continue = false;
 bool thread2_continue = false;
 
-int monsterx;
-int arrowx;
+bool box2Life = true;
+
+int monsterx = 480;
+int arrowx = 50;
+int monsterx2 = 480;
+int arrowx2 = 50;
 
 void ICGUI_Create()
 {
-	ICG_MWSize(1080, 700);
-	ICG_MWTitle("SHOOT UP");
+	ICG_MWSize(1180, 800);
+	ICG_MWTitle("Archer");
 
 }
 
@@ -34,11 +38,11 @@ void LoadArcherShoot()
 	PasteNon0(ArcherStanding, 10, 250, Forest);
 	DisplayImage(F3, Forest);
 
-	ICBYTES cordinat{ {40, 93, 53, 35},{162,93,60,35},{286,93,66,35},{413,93,67,35},{542,93,70,35},
-	{670,93,72,35}, {800,93,70,35}, {938,93,56,35}, {40, 93, 53, 35},{162,93,60,35},{286,93,66,35},{413,93,67,35},{542,93,70,35},
-	{670,93,72,35}, {800,93,70,35}, {938,93,56,35}, {40, 93, 53, 35},{162,93,60,35},{286,93,66,35},{413,93,67,35},{542,93,70,35},
-	{670,93,72,35}, {800,93,70,35}, {938,93,56,35}, {40, 93, 53, 35},{162,93,60,35},{286,93,66,35},{413,93,67,35},{542,93,70,35},
-	{670,93,72,35}, {800,93,70,35}, {938,93,56,35} };
+	ICBYTES cordinat{ {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
+	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
+	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
+	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
+	{405,165,91,43}, {20,280,86,46}, {215,280,81,46} };
 	/*for (int i = 1; i <= 13; i++)
 	{
 		Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherShoot[i - 1]);
@@ -49,12 +53,15 @@ void LoadArcherShoot()
 	for (int i = 0; i <= 32; i++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
 		Copy(Monster, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), MonsterR);
-		PasteNon0(MonsterR, 480-i*13.5 , 290, Forest);
+		PasteNon0(MonsterR, monsterx-i*12 , 280, Forest);
+		monsterx2 -= 12;
+	
+		
 		PasteNon0(ArcherStanding, 10, 250, Forest);
 
 		DisplayImage(F3, Forest);
 
-		Sleep(160);
+		Sleep(110);
 
 	}
 
@@ -79,23 +86,22 @@ void Shoot(void*)
 			Copy(Background, 1, 1, 574, 322, Forest);
 			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
 			PasteNon0(ArcherStanding, 10, 250, Forest);
-			DisplayImage(F3, Forest);
+			//DisplayImage(F3, Forest);
 			Sleep(120);
 
 		}
+		
 
-		Sleep(0);
-		for (int b = 0; b <= 40; b++) {
-			Copy(Arrow, 5, 5, 40, 40, ArrowR);
-			PasteNon0(ArrowR, 50 + b*12 , 270, Forest);
-			DisplayImage(F3, Forest);
-			Sleep(30);
-		}
+		
+		
 	}
 }
 
-void butonfonk()
-{
+
+
+
+
+void butonfonk(){
 	DWORD dw;
 	int m = 0;
 	if (!thread_continue)
@@ -107,10 +113,25 @@ void butonfonk()
 	else thread_continue = false;
 }
 
-void butonfonk2()
-{
-	DWORD dw;
 
+VOID* ArrowThread(PVOID lpParam) {
+
+	while (thread_continue) {
+		for (int b = 0; b <= 40; b++) {
+			Copy(Arrow, 5, 5, 40, 40, ArrowR);
+			PasteNon0(ArrowR, arrowx + b * 22, 270, Forest);
+			arrowx2 += b*22;
+			if (arrowx2 > monsterx2) {
+				thread2_continue = false;
+			}
+			DisplayImage(F3, Forest);
+			Sleep(30);
+		}
+		return NULL;
+	}
+
+void butonfonk2(){
+	DWORD dw;
 	if (!thread2_continue)
 	{
 		thread2_continue = true;
@@ -126,9 +147,10 @@ void ICGUI_main()
 	F1 = ICG_FrameMedium(10, 56, 56, 72);
 	F2 = ICG_FrameMedium(600, 200, 50, 20);
 	F3 = ICG_FrameMedium(10, 200, 574, 322);
+	F4 = ICG_FrameMedium(600,200, 50, 50);
 
-	ICG_Button(5, 5, 90, 40, "Load Archer", butonfonk2);
-	ICG_Button(105, 5, 90, 40, "Shoot Arrow", butonfonk);
+	ICG_Button(5, 5, 90, 40, "Start the Animation", butonfonk2);
+	ICG_Button(105, 5, 90, 40, "Shoot Arrow Animation", butonfonk);
 	
 
 	ReadImage("archer.bmp", Archer);
@@ -141,6 +163,6 @@ void ICGUI_main()
 	Copy(Background, 1, 1, 574, 322, Forest);
 	DisplayImage(F3, Forest);
 
-	ReadImage("monster.bmp", Monster);
+	ReadImage("monsternew.bmp", Monster);
 	DisplayImage(F4, Monster);
 }
