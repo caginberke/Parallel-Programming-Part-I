@@ -42,7 +42,7 @@ VOID* Animation(PVOID lpParam)
 	PasteNon0(ArcherNow, 10, 250, Forest);
 	DisplayImage(F3, Forest);
 
-	}*/
+	}
 
 	ICBYTES standing{{28, 3, 53, 61}, {129, 2, 52, 62}, {229, 1, 52, 63}, {329, 2, 52, 62}};
 
@@ -51,7 +51,7 @@ VOID* Animation(PVOID lpParam)
 		Copy(Standing, standing.I(1, s), standing.I(2, s), standing.I(3, s), standing.I(4, s), StandingR);
 		PasteNon0(StandingR, 480 , 265, Forest);
 
-		PasteNon0(ArcherStanding, 10, 250, Forest);
+		PasteNon0(ArcherNow, 10, 250, Forest);
 
 		DisplayImage(F3, Forest);
 	}
@@ -62,15 +62,15 @@ VOID* Animation(PVOID lpParam)
 			Copy(ShieldingUp, shieldingup.I(1, d), shieldingup.I(2, d), shieldingup.I(3, d), shieldingup.I(4, d), ShieldingUpR);
 
 			PasteNon0(ShieldingUp, 480, 265, Forest);
-			PasteNon0(ArcherStanding, 10, 250, Forest);
+			PasteNon0(ArcherNow, 10, 250, Forest);
 
 			DisplayImage(F3, Forest);
 			Sleep(110);
 		}
 	}
-	}
+	
 
-	}
+	
 	return NULL;
 }
 
@@ -212,9 +212,9 @@ void ICGUI_main()
 
 ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
 				for (int e = 0; e < 3; e++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Archer, 38, 54, 54, 74, ArcherNow);
 					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
+					PasteNon0(ArcherNow, 10, 250, Forest);
 					Copy(Dead, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), DeadR);
 					PasteNon0(DeadR, monsterx, 280, Forest);
 					DisplayImage(F3, Forest);
