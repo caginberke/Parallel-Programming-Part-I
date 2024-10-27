@@ -204,26 +204,29 @@ void ICGUI_main()
 	
 	F3 = ICG_FrameMedium(20, 50, 574, 322);
 
-
-
-
 	ICG_Button(265, 5, 90, 40, "Start the Animation", butonfonk);
 	
-	//MLE1 = ICG_MLEditSunken(500, 20, 200, 100, "awdaw", SCROLLBAR_V);
-	//MLE2 = ICG_MLEditSunken(700, 120, 200, 100, "awdaw", SCROLLBAR_V);
-
-	ReadImage("archer.bmp", Archer);
-
-	ReadImage("arrow.bmp", Arrow);
-
+	//Background
 	ReadImage("forest.bmp", Background);
 	Copy(Background, 1, 1, 574, 322, Forest);
 	DisplayImage(F3, Forest);
 
+	//Archer 
+	ReadImage("archer.bmp", Archer);
+	ReadImage("arrow.bmp", Arrow);
+
+	
+
+
 	ReadImage("monsternew.bmp", Monster);
-
 	ReadImage("hurt.bmp", Hurt);
-
 	ReadImage("dead.bmp", Dead);
 
 }
+
+
+//ICBYTES standing{ {28, 3, 53, 61}, {129, 2, 52, 62}, {229, 1, 52, 63}, {329, 2, 52, 62}};
+//ICBYTES shieldingup{ {28, 7, 56, 57}, {128, 7, 61, 57}, {229, 7, 57, 57}, {326, 7, 61, 57}, {425, 5, 66, 59}, {528, 2, 63, 62}, {632, 2, 59, 32}};
+//ICBYTES shield{ {28, 7, 62, 57}, {127, 7, 62, 57}, {228, 7, 63, 57}, {329, 7, 61, 57}};
+//ICBYTES dashing{{30, 7, 62, 57}, {134, 5, 62, 59}, {230, 10, 52, 54}, {332, 9, 53, 55}};
+//ICBYTES dying{ {25, 40, 70, 24}, {125, 40, 70, 24}, {225, 25, 70, 39}, {340, 15, 60, 49}, {435, 5, 65, 59}, {530, 4, 46, 60}};
