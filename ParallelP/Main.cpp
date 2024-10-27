@@ -190,9 +190,12 @@ ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
 void butonfonk()
 {
 	DWORD dw;
+
 	if (!thread_continue){
 		thread_continue = true;
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
+		thread2_continue = true;
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)LoadArcherShoot, NULL, 0, &dw);
 		//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
 
 		SetFocus(ICG_GetMainWindow());
@@ -206,8 +209,7 @@ void butonfonk2()
 
 	if (!thread2_continue)
 	{
-		thread2_continue = true;
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)LoadArcherShoot, NULL, 0, &dw);
+		
 		SetFocus(ICG_GetMainWindow());
 	}
 	else thread2_continue = false;
