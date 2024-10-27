@@ -6,9 +6,7 @@ int MLE1, MLE2;
 
 int F1, F2, F3, F4, F5, F6;
 
-ICBYTES ArcherShoot[13]; //For archer sprite sheet
-ICBYTES MonsterWalk[32]; //For monster sprite sheet
-ICBYTES MonsterHurt[4]; //For monster sprite sheet
+
 
 ICBYTES ArcherStanding, ArrowR, MonsterR;
 ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR , Dead, DeadR;
@@ -24,7 +22,7 @@ int arrowx = 50;
 
 void ICGUI_Create()
 {
-	ICG_MWSize(1400, 800);
+	ICG_MWSize(660, 450);
 	ICG_MWTitle("SHOOT UP");
 
 }
@@ -190,12 +188,9 @@ ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
 void butonfonk()
 {
 	DWORD dw;
-
 	if (!thread_continue){
 		thread_continue = true;
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
-		thread2_continue = true;
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)LoadArcherShoot, NULL, 0, &dw);
 		//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
 
 		SetFocus(ICG_GetMainWindow());
@@ -209,7 +204,8 @@ void butonfonk2()
 
 	if (!thread2_continue)
 	{
-		
+		thread2_continue = true;
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)LoadArcherShoot, NULL, 0, &dw);
 		SetFocus(ICG_GetMainWindow());
 	}
 	else thread2_continue = false;
@@ -218,12 +214,9 @@ void butonfonk2()
 
 void ICGUI_main()
 {
-	F1 = ICG_FrameMedium(10, 56, 56, 72);
-	F2 = ICG_FrameMedium(600, 200, 50, 20);
-	F3 = ICG_FrameMedium(10, 200, 574, 322);
-	F4 = ICG_FrameMedium(600,200, 50, 50);
-	F5 = ICG_FrameMedium(10, 600, 50, 50);
-	F6 = ICG_FrameMedium(735, 600, 50, 50);
+	
+	F3 = ICG_FrameMedium(20, 40, 574, 322);
+
 
 
 
@@ -234,22 +227,17 @@ void ICGUI_main()
 	//MLE2 = ICG_MLEditSunken(700, 120, 200, 100, "awdaw", SCROLLBAR_V);
 
 	ReadImage("archer.bmp", Archer);
-	DisplayImage(F1, Archer);
 
 	ReadImage("arrow.bmp", Arrow);
-	DisplayImage(F2, Arrow);
 
 	ReadImage("forest.bmp", Background);
 	Copy(Background, 1, 1, 574, 322, Forest);
 	DisplayImage(F3, Forest);
 
 	ReadImage("monsternew.bmp", Monster);
-	DisplayImage(F4, Monster);
 
 	ReadImage("hurt.bmp", Hurt);
-	DisplayImage(F5, Hurt);
 
 	ReadImage("dead.bmp", Dead);
-	DisplayImage(F6, Dead);
 
 }
