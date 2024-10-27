@@ -8,7 +8,7 @@ int F1, F2, F3, F4, F5, F6;
 
 
 
-ICBYTES ArcherStanding, ArrowR, MonsterR;
+ICBYTES ArcherNow, ArrowR, MonsterR;
 ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR , Dead, DeadR;
 ICBYTES Standing, ShieldingUp, Shield, Dashing, Dying;
 ICBYTES StandingR, ShieldingUpR, ShieldR, DashingR, DyingR;
@@ -17,6 +17,7 @@ ICBYTES StandingR, ShieldingUpR, ShieldR, DashingR, DyingR;
 bool thread_continue = false;
 bool thread2_continue = false;
 
+bool isShooting = false;
 bool thread_dead = false;
 
 int monsterx = 480;
@@ -37,15 +38,14 @@ VOID* Animation(PVOID lpParam)
 
 	
 	Copy(Background, 1, 1, 574, 322, Forest);
-	Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-	PasteNon0(ArcherStanding, 10, 250, Forest);
+	Copy(Archer, 38, 54, 54, 74, ArcherNow);
+	PasteNon0(ArcherNow, 10, 250, Forest);
 	DisplayImage(F3, Forest);
 
-	ICBYTES cordinat{ {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46} };
+	ICBYTES cordinat{ 
+		{30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},
+		{210,165,95,43},{405,165,91,43}, {20,280,86,46}, {215,280,81,46} };
+
 	/*for (int i = 1; i <= 13; i++)
 	{
 		Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherShoot[i - 1]);
@@ -69,7 +69,7 @@ VOID* Animation(PVOID lpParam)
 
 
 
-	for (int i = 0; i <= 32; i++) {
+	for (int i = 1; i <= 9; i++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
 
 		if (arrowx <= monsterx) {
@@ -78,8 +78,7 @@ VOID* Animation(PVOID lpParam)
 			monsterx = monsterx - 10;
 		}
 
-
-		PasteNon0(ArcherStanding, 10, 250, Forest);
+		PasteNon0(ArcherNow, 10, 250, Forest);
 
 		DisplayImage(F3, Forest);
 
@@ -100,14 +99,15 @@ VOID* Shoot(PVOID lpParam)
 		{300,54,71,74},{375,54,73,74},{446,54,93,74},{540,54,94,74},{636,54,90,74},{726,54,82,74},{808,54,74,74},{952,54,69,74} };
 
 
+		isShooting = true;
 		for (int i = 0; i <= 13; i++) {
 			Copy(Background, 1, 1, 574, 322, Forest);
-			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
-			PasteNon0(ArcherStanding, 10, 250, Forest);
+			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherNow);
 			//DisplayImage(F3, Forest);
 			Sleep(120);
 
 		}
+		isShooting = false;
 
 //ICBYTES shieldingup{ {28, 7, 56, 57}, {128, 7, 61, 57}, {229, 7, 57, 57}, {326, 7, 61, 57}, {425, 5, 66, 59}, {528, 2, 63, 62}, {632, 2, 59, 32}};
 //ICBYTES shield{ {28, 7, 62, 57}, {127, 7, 62, 57}, {228, 7, 63, 57}, {329, 7, 61, 57}};
@@ -126,9 +126,9 @@ VOID* Shoot(PVOID lpParam)
 				//thread_dead = true;
 				ICBYTES cor{{25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
 				for (int c = 0; c < 4; c++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Archer, 38, 54, 54, 74, ArcherNow);
 					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
+					PasteNon0(ArcherNow, 10, 250, Forest);
 					Copy(Hurt, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), HurtR);
 					PasteNon0(HurtR, monsterx, 280, Forest);
 					DisplayImage(F3, Forest);
@@ -138,9 +138,9 @@ VOID* Shoot(PVOID lpParam)
 
 				ICBYTES cord{ {10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
 				for (int e = 0; e < 3; e++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Archer, 38, 54, 54, 74, ArcherNow);
 					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
+					PasteNon0(ArcherNow, 10, 250, Forest);
 					Copy(Dead, cord.I(1, e), cord.I(2, e), cord.I(3, e), cord.I(4, e), DeadR);
 					PasteNon0(DeadR, monsterx, 295, Forest);
 					DisplayImage(F3, Forest);
@@ -148,9 +148,9 @@ VOID* Shoot(PVOID lpParam)
 
 				}
 				for (int k = 0; k < 50; k++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Archer, 38, 54, 54, 74, ArcherNow);
 					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
+					PasteNon0(ArcherNow, 10, 250, Forest);
 					PasteNon0(DeadR, monsterx, 295+k, Forest);
 					DisplayImage(F3, Forest);
 					Sleep(300);
@@ -172,36 +172,7 @@ VOID* Shoot(PVOID lpParam)
 	return NULL;
 }
 
-/*
 
-ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
-				for (int e = 0; e < 3; e++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
-					Copy(Dead, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), DeadR);
-					PasteNon0(DeadR, monsterx, 280, Forest);
-					DisplayImage(F3, Forest);
-					Sleep(150);
-
-				}
-
-*/
-
-/*VOID* DeadAnimation(PVOID lpParam) {
-	
-	while (thread_dead) {
-		Copy(Background, 1, 1, 574, 322, Forest);
-		Copy(Hurt, 25, 45, 150, 49, HurtR);
-		PasteNon0(HurtR, monsterx, 280, Forest);
-		DisplayImage(F3, Forest);
-
-		
-
-
-	}
-	return NULL;
-}*/
 
 
 void butonfonk()
@@ -253,3 +224,33 @@ void ICGUI_main()
 
 }
 
+/*
+
+ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
+				for (int e = 0; e < 3; e++) {
+					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+					Copy(Background, 1, 1, 574, 322, Forest);
+					PasteNon0(ArcherStanding, 10, 250, Forest);
+					Copy(Dead, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), DeadR);
+					PasteNon0(DeadR, monsterx, 280, Forest);
+					DisplayImage(F3, Forest);
+					Sleep(150);
+
+				}
+
+*/
+
+/*VOID* DeadAnimation(PVOID lpParam) {
+
+	while (thread_dead) {
+		Copy(Background, 1, 1, 574, 322, Forest);
+		Copy(Hurt, 25, 45, 150, 49, HurtR);
+		PasteNon0(HurtR, monsterx, 280, Forest);
+		DisplayImage(F3, Forest);
+
+
+
+
+	}
+	return NULL;
+}*/
