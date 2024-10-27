@@ -202,12 +202,12 @@ void butonfonk()
 void ICGUI_main()
 {
 	
-	F3 = ICG_FrameMedium(20, 40, 574, 322);
+	F3 = ICG_FrameMedium(20, 50, 574, 322);
 
 
 
 
-	ICG_Button(5, 5, 90, 40, "Start the Animation", butonfonk);
+	ICG_Button(265, 5, 90, 40, "Start the Animation", butonfonk);
 	
 	//MLE1 = ICG_MLEditSunken(500, 20, 200, 100, "awdaw", SCROLLBAR_V);
 	//MLE2 = ICG_MLEditSunken(700, 120, 200, 100, "awdaw", SCROLLBAR_V);
