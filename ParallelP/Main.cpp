@@ -10,6 +10,9 @@ int F1, F2, F3, F4, F5, F6;
 
 ICBYTES ArcherStanding, ArrowR, MonsterR;
 ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR , Dead, DeadR;
+ICBYTES Standing, ShieldingUp, Shield, Dashing, Dying;
+ICBYTES StandingR, ShieldingUpR, ShieldR, DashingR, DyingR;
+
 
 bool thread_continue = false;
 bool thread2_continue = false;
@@ -49,6 +52,22 @@ VOID* Animation(PVOID lpParam)
 		PasteNon0(ArcherShoot[i - 1], 33 * i, 230, Forest);
 	}*/
 
+	/*ICBYTES standing{{28, 3, 53, 61}, {129, 2, 52, 62}, {229, 1, 52, 63}, {329, 2, 52, 62}};
+
+	for (int s = 1; s < 5; s++) {
+		Copy(Background, 1, 1, 574, 322, Forest);
+		Copy(Standing, cordinat.I(1, s), cordinat.I(2, s), cordinat.I(3, s), cordinat.I(4, s), StandingR);
+		PasteNon0(StandingR, 480 , 280, Forest);
+
+
+		PasteNon0(StandingR, 10, 250, Forest);
+		DisplayImage(F3, Forest);
+
+		Sleep(110);
+
+	}*/
+
+
 
 	for (int i = 0; i <= 32; i++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
@@ -57,7 +76,6 @@ VOID* Animation(PVOID lpParam)
 			Copy(Monster, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), MonsterR);
 			PasteNon0(MonsterR, monsterx, 280, Forest);
 			monsterx = monsterx - 10;
-
 		}
 
 
@@ -66,7 +84,6 @@ VOID* Animation(PVOID lpParam)
 		DisplayImage(F3, Forest);
 
 		Sleep(110);
-
 	}
 
 	}
@@ -91,6 +108,11 @@ VOID* Shoot(PVOID lpParam)
 			Sleep(120);
 
 		}
+
+//ICBYTES shieldingup{ {28, 7, 56, 57}, {128, 7, 61, 57}, {229, 7, 57, 57}, {326, 7, 61, 57}, {425, 5, 66, 59}, {528, 2, 63, 62}, {632, 2, 59, 32}};
+//ICBYTES shield{ {28, 7, 62, 57}, {127, 7, 62, 57}, {228, 7, 63, 57}, {329, 7, 61, 57}};
+//ICBYTES dashing{{30, 7, 62, 57}, {134, 5, 62, 59}, {230, 10, 52, 54}, {332, 9, 53, 55}};
+//ICBYTES dying{ {25, 40, 70, 24}, {125, 40, 70, 24}, {225, 25, 70, 39}, {340, 15, 60, 49}, {435, 5, 65, 59}, {530, 4, 46, 60}};
 
 		//monster die
 		for (int b = 0; b <= 40; b++) {
@@ -222,11 +244,12 @@ void ICGUI_main()
 	ReadImage("hurt.bmp", Hurt);
 	ReadImage("dead.bmp", Dead);
 
+	ReadImage("standing.bmp", Standing);
+	ReadImage("shieldingup.bmp", ShieldingUp);
+	ReadImage("shield.bmp", Shield);
+	ReadImage("dashing.bmp", Dashing);
+	ReadImage("dying.bmp", Dying);
+
+
 }
 
-
-//ICBYTES standing{ {28, 3, 53, 61}, {129, 2, 52, 62}, {229, 1, 52, 63}, {329, 2, 52, 62}};
-//ICBYTES shieldingup{ {28, 7, 56, 57}, {128, 7, 61, 57}, {229, 7, 57, 57}, {326, 7, 61, 57}, {425, 5, 66, 59}, {528, 2, 63, 62}, {632, 2, 59, 32}};
-//ICBYTES shield{ {28, 7, 62, 57}, {127, 7, 62, 57}, {228, 7, 63, 57}, {329, 7, 61, 57}};
-//ICBYTES dashing{{30, 7, 62, 57}, {134, 5, 62, 59}, {230, 10, 52, 54}, {332, 9, 53, 55}};
-//ICBYTES dying{ {25, 40, 70, 24}, {125, 40, 70, 24}, {225, 25, 70, 39}, {340, 15, 60, 49}, {435, 5, 65, 59}, {530, 4, 46, 60}};
