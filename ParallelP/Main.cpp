@@ -52,6 +52,15 @@ VOID* Animation(PVOID lpParam)
 
 			PasteNon0(ArcherNow, 10, 250, Forest);
 
+		DisplayImage(F3, Forest);
+	}
+
+
+	if (arrowx > 400) {
+		ICBYTES shieldingup{ {28, 7, 56, 57}, {128, 7, 61, 57}, {229, 7, 57, 57}, {326, 7, 61, 57}, {425, 5, 66, 59}, {528, 2, 63, 62}, {632, 2, 59, 32} };
+		for (int d = 1; d < 8;  d++) {
+			Copy(Background, 1, 1, 574, 322, Forest);
+			Copy(ShieldingUp, shieldingup.I(1, d), shieldingup.I(2, d), shieldingup.I(3, d), shieldingup.I(4, d), ShieldingUpR);
 			DisplayImage(F3, Forest);
 		}
 		if (arrowx > 350) {
