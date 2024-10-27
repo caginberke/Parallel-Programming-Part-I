@@ -54,7 +54,9 @@ VOID* Animation(PVOID lpParam)
 		DisplayImage(F3, Forest);
 		Sleep(110);
 	}
-	if (arrowx > 350) {
+
+
+	if (arrowx > 400) {
 		ICBYTES shieldingup{ {28, 7, 56, 57}, {128, 7, 61, 57}, {229, 7, 57, 57}, {326, 7, 61, 57}, {425, 5, 66, 59}, {528, 2, 63, 62}, {632, 2, 59, 32} };
 		for (int d = 1; d < 8;  d++) {
 			Copy(Background, 1, 1, 574, 322, Forest);
@@ -82,7 +84,7 @@ VOID* Shoot(PVOID lpParam)
 		{300,54,71,74},{375,54,73,74},{446,54,93,74},{540,54,94,74},{636,54,90,74},{726,54,82,74},{808,54,74,74},{952,54,69,74} };
 
 
-		for (int i = 0; i <= 13; i++) {
+		for (int i = 1; i < 14; i++) {
 			Copy(Background, 1, 1, 574, 322, Forest);
 			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
 			PasteNon0(ArcherStanding, 10, 250, Forest);
@@ -144,8 +146,7 @@ VOID* Shoot(PVOID lpParam)
 
 			}
 
-			DisplayImage(F3, Forest);
-			Sleep(30);
+			
 
 		}
 		
