@@ -1,192 +1,143 @@
-#include<windows.h>
+﻿#include<windows.h>
 #include"icb_gui.h"
 
 int MLE1, MLE2;
-	
 
 int F1, F2, F3, F4, F5, F6;
 
-
-
 ICBYTES ArcherStanding, ArrowR, MonsterR;
-ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt , HurtR , Dead, DeadR;
+ICBYTES Forest, Archer, Arrow, Monster, Background, Temp, Hurt, HurtR, Dead, DeadR;
+ICBYTES slimeFrame;
 
 bool thread_continue = false;
 bool thread2_continue = false;
 
 bool thread_dead = false;
 
-int monsterx = 480;
-int arrowx = 50;
-
+int slimeX = 480;
+int slimeY = 280;
+int arrowX = 50;
 
 void ICGUI_Create()
 {
-	ICG_MWSize(660, 450);
-	ICG_MWTitle("SHOOT UP");
-
+    ICG_MWSize(660, 450);
+    ICG_MWTitle("SHOOT UP");
 }
 
-VOID* Animation(PVOID lpParam)
-{
+VOID* Animation(PVOID lpParam) {
+    PasteNon0(ArcherStanding, 10, 250, Forest);
 
-	while (thread2_continue) {
+    // Slime Yürüyüş Animasyonu
+    ICBYTES cordinat{ {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
+                      {405,165,91,43}, {20,280,86,46}, {215,280,81,46} };
 
-	
-	Copy(Background, 1, 1, 574, 322, Forest);
-	Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-	PasteNon0(ArcherStanding, 10, 250, Forest);
+    while (thread2_continue) {
+        for (int frame = 0; frame < 8; frame++) { // Slime için 8 adımlık yürüyüş animasyonu
+            Copy(Background, 1, 1, 574, 322, Forest);  // Arka planı yenile
+            Copy(Monster, cordinat.I(1, frame + 1), cordinat.I(2, frame + 1), cordinat.I(3, frame + 1), cordinat.I(4, frame + 1), slimeFrame);
+            PasteNon0(slimeFrame, slimeX, slimeY, Forest);
+            PasteNon0(ArcherStanding, 10, 250, Forest);  // Okçuyu sabit tut
+            DisplayImage(F3, Forest);  // Güncellenmiş resmi görüntüle
 
-	ICBYTES cordinat{ {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46} };
-	/*for (int i = 1; i <= 13; i++)
-	{
-		Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherShoot[i - 1]);
-		PasteNon0(ArcherShoot[i - 1], 33 * i, 230, Forest);
-	}*/
-
-
-	for (int m = 1; m < 8; m++) {
-		Copy(Background, 1, 1, 574, 322, Forest);
-
-		if (arrowx <= monsterx) {
-			Copy(Monster, cordinat.I(1, m), cordinat.I(2, m), cordinat.I(3, m), cordinat.I(4, m), MonsterR);
-			PasteNon0(MonsterR, monsterx, 280, Forest);
-			monsterx = monsterx - 10;
-
-		}
-
-
-		PasteNon0(ArcherStanding, 10, 250, Forest);
-
-		DisplayImage(F3, Forest);
-
-		Sleep(110);
-
-	}
-
-	}
-	return NULL;
+            slimeX -= 10;  // Slime sola doğru hareket ediyor
+            Sleep(110);
+        }
+    }
+    return NULL;
 }
 
-VOID* Shoot(PVOID lpParam)
-{
+VOID* Shoot(PVOID lpParam) {
+    ICBYTES cordinat{ {38, 54, 54, 74},{96,54,67,74},{100,54,63,74},{161,54,70,74},{230,54,73,74},
+                      {300,54,71,74},{375,54,73,74},{446,54,93,74},{540,54,94,74},{636,54,90,74},
+                      {726,54,82,74},{808,54,74,74},{952,54,69,74} };
 
-	if (thread_continue) {
-
-		//Shoot arrow
-		ICBYTES cordinat{ {38, 54, 54, 74},{96,54,67,74},{100,54,63,74},{161,54,70,74},{230,54,73,74},
-		{300,54,71,74},{375,54,73,74},{446,54,93,74},{540,54,94,74},{636,54,90,74},{726,54,82,74},{808,54,74,74},{952,54,69,74} };
-
-
-		for (int i = 1; i < 14; i++) {
-			Copy(Background, 1, 1, 574, 322, Forest);
-			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
-			PasteNon0(ArcherStanding, 10, 250, Forest);
-			Sleep(120);
-
-		}
-
-		//monster die
-		for (int b = 1; b <= 41; b++) {
-			if(arrowx < monsterx){
-				Copy(Arrow, 5, 5, 40, 40, ArrowR);
-				PasteNon0(ArrowR, arrowx , 270, Forest);
-				arrowx =  arrowx + 10;
-			}
-			if (monsterx <= arrowx) {
-				thread2_continue = false;
-				//thread_dead = true;
-				ICBYTES cor{{25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
-				for (int c = 1; c < 5; c++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
-					Copy(Hurt, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), HurtR);
-					PasteNon0(HurtR, monsterx, 280, Forest);
-					DisplayImage(F3, Forest);
-					Sleep(350);
-					
-				}
-
-				ICBYTES cord{ {10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
-				for (int e = 1; e < 4; e++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
-					Copy(Dead, cord.I(1, e), cord.I(2, e), cord.I(3, e), cord.I(4, e), DeadR);
-					PasteNon0(DeadR, monsterx, 295, Forest);
-					DisplayImage(F3, Forest);
-					Sleep(280);
-
-				}
-				for (int k = 1; k < 51; k++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
-					PasteNon0(DeadR, monsterx, 295+k, Forest);
-					DisplayImage(F3, Forest);
-					Sleep(300);
-
-				}
+    // Okçunun ok fırlatma animasyonu
+    for (int frame = 0; frame < 13; frame++) {
+        Copy(Background, 1, 1, 574, 322, Forest);  // Arka planı yenile
+        Copy(Archer, cordinat.I(1, frame + 1), cordinat.I(2, frame + 1), cordinat.I(3, frame + 1), cordinat.I(4, frame + 1), ArcherStanding);
+        PasteNon0(ArcherStanding, 10, 250, Forest);  // Okçuyu çiz
+        PasteNon0(slimeFrame, slimeX, slimeY, Forest);
+        DisplayImage(F3, Forest);  // Güncellenmiş resmi görüntüle
+        Sleep(120);
+    }
 
 
-				b = 42;
-				//Copy(Background, 1, 1, 574, 322, Forest);
+    // Okun slime’a doğru hareket etmesi
+    while (arrowX < slimeX) {
+        Copy(Background, 1, 1, 574, 322, Forest);  // Arka planı yenile
+        PasteNon0(ArcherStanding, 10, 250, Forest);
+        Copy(Arrow, 5, 5, 40, 40, ArrowR);
+        PasteNon0(ArrowR, arrowX, 270, Forest);
+        PasteNon0(slimeFrame, slimeX, slimeY, Forest);
+        arrowX += 10;
+        DisplayImage(F3, Forest);
+        Sleep(30);
+    }
 
-			}
+    if (arrowX >= slimeX) {
+        thread2_continue = false;
 
-			DisplayImage(F3, Forest);
-			Sleep(30);
+        // Slime vurulma animasyonu
+        ICBYTES cor{ {25, 45, 150, 49}, {220, 40, 135, 54}, {410, 35, 125, 59}, {600, 35, 103, 59} };
+        for (int frame = 0; frame < 4; frame++) {
+            Copy(Background, 1, 1, 574, 322, Forest);
+            PasteNon0(ArcherStanding, 10, 250, Forest);
+            Copy(Hurt, cor.I(1, frame + 1), cor.I(2, frame + 1), cor.I(3, frame + 1), cor.I(4, frame + 1), HurtR);
+            PasteNon0(HurtR, slimeX, slimeY, Forest);
+            DisplayImage(F3, Forest);
+            Sleep(350);
+        }
+    }
 
-		}
-		
-	}
-	return NULL;
+    ICBYTES cord{ {10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
+    for (int e = 1; e < 4; e++) {
+        Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+        Copy(Background, 1, 1, 574, 322, Forest);
+        PasteNon0(ArcherStanding, 10, 250, Forest);
+        Copy(Dead, cord.I(1, e), cord.I(2, e), cord.I(3, e), cord.I(4, e), DeadR);
+        PasteNon0(DeadR, slimeX, 295, Forest);
+        DisplayImage(F3, Forest);
+        Sleep(280);
+
+    }
+    for (int k = 1; k < 51; k++) {
+        Copy(Archer, 38, 54, 54, 74, ArcherStanding);
+        Copy(Background, 1, 1, 574, 322, Forest);
+        PasteNon0(ArcherStanding, 10, 250, Forest);
+        PasteNon0(DeadR, slimeX, 295 + k, Forest);
+        DisplayImage(F3, Forest);
+        Sleep(300);
+
+    }
+    return NULL;
 }
 
 void butonfonk()
 {
-	DWORD dw;
-	if (!thread_continue){
-		thread_continue = true;
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
-		thread2_continue = true;
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Animation, NULL, 0, &dw);
-		//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DeadAnimation, NULL, 0, &dw);
-
-		SetFocus(ICG_GetMainWindow());
-	}
-	else thread_continue = false;
+    DWORD dw;
+    if (!thread_continue) {
+        thread_continue = true;
+        thread2_continue = true;
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Shoot, NULL, 0, &dw);
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Animation, NULL, 0, &dw);
+        SetFocus(ICG_GetMainWindow());
+    }
+    else thread_continue = false;
 }
-
-
 
 void ICGUI_main()
 {
-	
-	F3 = ICG_FrameMedium(20, 50, 574, 322);
+    F3 = ICG_FrameMedium(20, 50, 574, 322);
 
+    ICG_Button(265, 5, 90, 40, "Start the Animation", butonfonk);
 
+    ReadImage("archer.bmp", Archer);
+    ReadImage("arrow.bmp", Arrow);
+    ReadImage("forest.bmp", Background);
+    Copy(Background, 1, 1, 574, 322, Forest);
+    DisplayImage(F3, Forest);
 
-
-	ICG_Button(265, 5, 90, 40, "Start the Animation", butonfonk);
-	
-	//MLE1 = ICG_MLEditSunken(500, 20, 200, 100, "awdaw", SCROLLBAR_V);
-	//MLE2 = ICG_MLEditSunken(700, 120, 200, 100, "awdaw", SCROLLBAR_V);
-
-	ReadImage("archer.bmp", Archer);
-
-	ReadImage("arrow.bmp", Arrow);
-
-	ReadImage("forest.bmp", Background);
-	Copy(Background, 1, 1, 574, 322, Forest);
-	DisplayImage(F3, Forest);
-
-	ReadImage("monsternew.bmp", Monster);
-
-	ReadImage("hurt.bmp", Hurt);
-
-	ReadImage("dead.bmp", Dead);
-
+    ReadImage("monsternew.bmp", Monster);
+    ReadImage("hurt.bmp", Hurt);
+    ReadImage("dead.bmp", Dead);
 }
