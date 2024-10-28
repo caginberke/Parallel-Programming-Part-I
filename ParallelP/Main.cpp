@@ -117,7 +117,7 @@ VOID* Shoot(PVOID lpParam)
 					Copy(Dead, cord.I(1, e), cord.I(2, e), cord.I(3, e), cord.I(4, e), DeadR);
 					PasteNon0(DeadR, monsterx, 295, Forest);
 					DisplayImage(F3, Forest);
-					Sleep(300);
+					Sleep(280);
 
 				}
 				for (int k = 1; k < 51; k++) {
