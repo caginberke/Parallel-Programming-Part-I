@@ -50,11 +50,11 @@ VOID* Animation(PVOID lpParam)
 	}*/
 
 
-	for (int i = 0; i <= 32; i++) {
+	for (int m = 1; m < 33; m++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
 
 		if (arrowx <= monsterx) {
-			Copy(Monster, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), MonsterR);
+			Copy(Monster, cordinat.I(1, m), cordinat.I(2, m), cordinat.I(3, m), cordinat.I(4, m), MonsterR);
 			PasteNon0(MonsterR, monsterx, 280, Forest);
 			monsterx = monsterx - 10;
 
@@ -83,7 +83,7 @@ VOID* Shoot(PVOID lpParam)
 		{300,54,71,74},{375,54,73,74},{446,54,93,74},{540,54,94,74},{636,54,90,74},{726,54,82,74},{808,54,74,74},{952,54,69,74} };
 
 
-		for (int i = 0; i <= 13; i++) {
+		for (int i = 1; i < 14; i++) {
 			Copy(Background, 1, 1, 574, 322, Forest);
 			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
 			PasteNon0(ArcherStanding, 10, 250, Forest);
@@ -93,7 +93,7 @@ VOID* Shoot(PVOID lpParam)
 		}
 
 		//monster die
-		for (int b = 0; b <= 40; b++) {
+		for (int b = 1; b <= 41; b++) {
 			if(arrowx < monsterx){
 				Copy(Arrow, 5, 5, 40, 40, ArrowR);
 				PasteNon0(ArrowR, arrowx , 270, Forest);
@@ -103,7 +103,7 @@ VOID* Shoot(PVOID lpParam)
 				thread2_continue = false;
 				//thread_dead = true;
 				ICBYTES cor{{25, 45, 150 ,49}, {220, 40, 135 ,54}, {410, 35, 125 ,59}, {600, 35, 103 ,59} };
-				for (int c = 0; c < 4; c++) {
+				for (int c = 1; c < 5; c++) {
 					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
 					Copy(Background, 1, 1, 574, 322, Forest);
 					PasteNon0(ArcherStanding, 10, 250, Forest);
@@ -115,7 +115,7 @@ VOID* Shoot(PVOID lpParam)
 				}
 
 				ICBYTES cord{ {10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
-				for (int e = 0; e < 3; e++) {
+				for (int e = 1; e < 4; e++) {
 					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
 					Copy(Background, 1, 1, 574, 322, Forest);
 					PasteNon0(ArcherStanding, 10, 250, Forest);
@@ -125,7 +125,7 @@ VOID* Shoot(PVOID lpParam)
 					Sleep(300);
 
 				}
-				for (int k = 0; k < 50; k++) {
+				for (int k = 1; k < 51; k++) {
 					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
 					Copy(Background, 1, 1, 574, 322, Forest);
 					PasteNon0(ArcherStanding, 10, 250, Forest);
@@ -136,7 +136,7 @@ VOID* Shoot(PVOID lpParam)
 				}
 
 
-				b = 41;
+				b = 42;
 				//Copy(Background, 1, 1, 574, 322, Forest);
 
 			}
