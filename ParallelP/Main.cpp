@@ -36,12 +36,8 @@ VOID* Animation(PVOID lpParam)
 	Copy(Background, 1, 1, 574, 322, Forest);
 	Copy(Archer, 38, 54, 54, 74, ArcherStanding);
 	PasteNon0(ArcherStanding, 10, 250, Forest);
-	DisplayImage(F3, Forest);
 
 	ICBYTES cordinat{ {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
-	{405,165,91,43}, {20,280,86,46}, {215,280,81,46}, {30, 30, 79, 56},{215,30,86,56},{405,35,86,51},{20,165,90,43},{210,165,95,43},
 	{405,165,91,43}, {20,280,86,46}, {215,280,81,46} };
 	/*for (int i = 1; i <= 13; i++)
 	{
@@ -50,7 +46,7 @@ VOID* Animation(PVOID lpParam)
 	}*/
 
 
-	for (int m = 1; m < 33; m++) {
+	for (int m = 1; m < 8; m++) {
 		Copy(Background, 1, 1, 574, 322, Forest);
 
 		if (arrowx <= monsterx) {
@@ -87,7 +83,6 @@ VOID* Shoot(PVOID lpParam)
 			Copy(Background, 1, 1, 574, 322, Forest);
 			Copy(Archer, cordinat.I(1, i), cordinat.I(2, i), cordinat.I(3, i), cordinat.I(4, i), ArcherStanding);
 			PasteNon0(ArcherStanding, 10, 250, Forest);
-			//DisplayImage(F3, Forest);
 			Sleep(120);
 
 		}
@@ -149,38 +144,6 @@ VOID* Shoot(PVOID lpParam)
 	}
 	return NULL;
 }
-
-/*
-
-ICBYTES cor{{10, 15, 79 ,46}, {200, 25, 86 ,36}, {390, 30, 91 ,31} };
-				for (int e = 0; e < 3; e++) {
-					Copy(Archer, 38, 54, 54, 74, ArcherStanding);
-					Copy(Background, 1, 1, 574, 322, Forest);
-					PasteNon0(ArcherStanding, 10, 250, Forest);
-					Copy(Dead, cor.I(1, c), cor.I(2, c), cor.I(3, c), cor.I(4, c), DeadR);
-					PasteNon0(DeadR, monsterx, 280, Forest);
-					DisplayImage(F3, Forest);
-					Sleep(150);
-
-				}
-
-*/
-
-/*VOID* DeadAnimation(PVOID lpParam) {
-	
-	while (thread_dead) {
-		Copy(Background, 1, 1, 574, 322, Forest);
-		Copy(Hurt, 25, 45, 150, 49, HurtR);
-		PasteNon0(HurtR, monsterx, 280, Forest);
-		DisplayImage(F3, Forest);
-
-		
-
-
-	}
-	return NULL;
-}*/
-
 
 void butonfonk()
 {
