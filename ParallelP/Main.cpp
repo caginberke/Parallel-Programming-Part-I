@@ -18,10 +18,21 @@ int slimeX = 480;
 int slimeY = 280;
 int arrowX = 50;
 
+int width=660;
+int height=450;
+
+void ICGUI_Create(int width, int height)
+{
+    ICG_MWSize(width, height);
+    ICG_MWTitle("SHOOT UP");
+
+}
+
 void ICGUI_Create()
 {
-    ICG_MWSize(660, 450);
+    ICG_MWSize(width, height);
     ICG_MWTitle("SHOOT UP");
+
 }
 
 VOID* Animation(PVOID lpParam) {
@@ -40,7 +51,7 @@ VOID* Animation(PVOID lpParam) {
             DisplayImage(F3, Forest);  // Güncellenmiş resmi görüntüle
 
             slimeX -= 10;  // Slime sola doğru hareket ediyor
-            Sleep(110);
+            Sleep(120);
         }
     }
     return NULL;
@@ -127,6 +138,12 @@ void butonfonk()
 
 void ICGUI_main()
 {
+
+    for (int a = 1; a < 20; a++) {
+        Sleep(70);
+        ICGUI_Create(a * 34, a * 23.5);
+    }
+
     F3 = ICG_FrameMedium(20, 50, 574, 322);
 
     ICG_Button(265, 5, 90, 40, "Start the Animation", butonfonk);
